@@ -5,7 +5,7 @@ Data science project for DSC 106 class at UCSD. It is a group project using data
 
 <div id="my_dataviz"></div>
 
-d3.csv("https://noahdanan.github.io/Powerlifting-Visualization/PowerliftingCutDown.csv").then(function(data) {
+d3.csv("https://noahdanan.github.io/Powerlifting-Visualization/Powerlifting.csv").then(function(data) {
     // Data processing and visualization code goes here
 
     // For example, to log the loaded data:
