@@ -107,4 +107,44 @@
 
                         d3.select(_thisPath).transition().duration(250).attr('d', arcHover);
 
-                        d3.select(parentNode).select('.data-text__value').classed('data-text
+                        d3.select(parentNode).select('.data-text__value').classed('data-text--show', true);
+                        d3.select(parentNode).select('.data-text__name').classed('data-text--show', true);
+                    }
+                })
+                .each(function(d, i) {
+                    if (d.value === max) {
+                        d3.select(this).attr('d', arcHover);
+                        activeSegment = this;
+                    }
+                    this._current = i;
+                });
+
+            const legendRectSize = 15;
+            const legendSpacing = 10;
+
+            const legend = svg.selectAll('.legend')
+                .data(color.domain())
+                .enter()
+                .append('g')
+                .attr('class', 'legend')
+                .attr('transform', function(legendData, i) {
+                    const itemHeight = legendRectSize + legendSpacing;
+                    const offset = legendRectSize * color.domain().length;
+                    const horz = svgWidth + 80;
+                    const vert = (i * itemHeight) + legendRectSize + (svgHeight - offset) / 2;
+                    return `translate(${horz}, ${vert})`;
+                });
+
+            legend.append('circle')
+                .attr('r', legendRectSize / 2)
+                .style('fill', color);
+
+            legend.append('text')
+                .attr('x', legendRectSize + legendSpacing)
+                .attr('y', legendRectSize - legendSpacing)
+                .attr('class', 'legend-text')
+                .text((legendData) => legendData);
+        }
+    </script>
+</body>
+</html>
