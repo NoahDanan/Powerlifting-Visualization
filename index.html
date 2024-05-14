@@ -31,17 +31,6 @@
           .then(function(data) {
             // Log data to console for debugging
             console.log(data);
-    
-            // Display the first few entries in the data-output div to ensure loading
-            const output = d3.select("#data-output");
-            output.selectAll("p")
-              .data(data.slice(0, 5)) // Display only the first 5 entries
-              .enter()
-              .append("p")
-              .text(d => `Name: ${d.Name}, Division: ${d.Division}, TotalKg: ${d.TotalKg}`);
-    
-            // Call the function to draw the pie chart with example data
-            bakeDonut(pieData);
           })
           .catch(function(error) {
             console.error('Error loading the CSV file:', error);
