@@ -25,6 +25,28 @@
 </head>
 <body>
     <script>
+        
+        // Load the powerlifting data and display it to ensure it's being imported correctly
+        d3.csv("https://noahdanan.github.io/Powerlifting-Visualization/powerlifting.csv")
+          .then(function(data) {
+            // Log data to console for debugging
+            console.log(data);
+    
+            // Display the first few entries in the data-output div to ensure loading
+            const output = d3.select("#data-output");
+            output.selectAll("p")
+              .data(data.slice(0, 5)) // Display only the first 5 entries
+              .enter()
+              .append("p")
+              .text(d => `Name: ${d.Name}, Division: ${d.Division}, TotalKg: ${d.TotalKg}`);
+    
+            // Call the function to draw the pie chart with example data
+            bakeDonut(pieData);
+          })
+          .catch(function(error) {
+            console.error('Error loading the CSV file:', error);
+          });
+
         const pieData = [
   {name: 'Running', value: 40, color: '#18FFFF'},
   {name: 'Paused', value: 26, color: '#0288D1'},
