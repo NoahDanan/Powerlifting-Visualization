@@ -11,6 +11,7 @@
     <script>
         d3.csv("https://noahdanan.github.io/Powerlifting-Visualization/powerlifting.csv")
           .then(function(data) {
+              console.log(data);
             // Example: Summing up entries for each division
             let counts = d3.rollups(data, v => v.length, d => d.Division)
                            .map(([key, value]) => ({ Division: key, Count: value }));
