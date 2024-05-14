@@ -9,10 +9,54 @@
 <body>
     <div id="my_dataviz"></div>
     <script>
-        // D3.js code for loading and visualizing data
         d3.csv("https://noahdanan.github.io/Powerlifting-Visualization/powerlifting.csv")
           .then(function(data) {
-            // Processing data and creating visualization
+            // Example: Summing up entries for each division
+            let counts = d3.rollups(data, v => v.length, d => d.Division)
+                           .map(([key, value]) => ({ Division: key, Count: value }));
+
+            // Set the dimensions and margins of the graph
+            const width = 450,
+                  height = 450,
+                  margin = 40;
+
+            // The radius of the pie
+            const radius = Math.min(width, height) / 2 - margin;
+
+            // Append the svg object to the div called "my_dataviz"
+            const svg = d3.select("#my_dataviz")
+                          .append("svg")
+                            .attr("width", width)
+                            .attr("height", height)
+                          .append("g")
+                            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+            // Set the color scale
+            const color = d3.scaleOrdinal()
+                            .domain(counts.map(d => d.Division))
+                            .range(d3.schemeCategory10);
+
+            // Compute the position of each group on the pie:
+            const pie = d3.pie()
+                          .value(function(d) { return d.Count; });
+            const data_ready = pie(counts);
+
+            // shape helper to build arcs:
+            const arcGenerator = d3.arc()
+                                   .innerRadius(0)
+                                   .outerRadius(radius);
+
+            // Build the pie chart
+            svg
+              .selectAll('mySlices')
+              .data(data_ready)
+              .enter()
+              .append('path')
+                .attr('d', arcGenerator)
+                .attr('fill', function(d) { return(color(d.data.Division)); })
+                .attr("stroke", "white")
+                .style("stroke-width", "2px")
+                .style("opacity", 0.7);
           })
           .catch(function(error) {
             console.error('Error loading the CSV file:', error);
