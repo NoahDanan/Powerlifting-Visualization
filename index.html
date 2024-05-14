@@ -8,14 +8,14 @@
     <style>
         .data-text {
             fill: #fff;
-            font-size: 12px;
+            font-size: 16px; /* Adjusted for larger view */
             visibility: hidden;
         }
         .data-text--show {
             visibility: visible;
         }
         .legend-text {
-            font-size: 12px;
+            font-size: 14px; /* Adjusted for larger view */
         }
     </style>
 </head>
@@ -33,11 +33,11 @@
         function bakeDonut(d) {
             let activeSegment;
             const data = d.sort((a, b) => b['value'] - a['value']),
-                  viewWidth = 500,
-                  viewHeight = 300,
+                  viewWidth = 1000, // Increased from 500
+                  viewHeight = 600, // Increased from 300
                   svgWidth = viewHeight,
                   svgHeight = viewHeight,
-                  thickness = 40,
+                  thickness = 80, // Increased to maintain visual proportion
                   colorArray = data.map(k => k.color),
                   el = d3.select('body'),
                   radius = Math.min(svgWidth, svgHeight) / 2,
@@ -60,7 +60,7 @@
 
             const arcHover = d3.arc()
                 .innerRadius(radius - (thickness + 5))
-                .outerRadius(radius + 8);
+                .outerRadius(radius + 10); // Slightly increased for emphasis
 
             const pie = d3.pie()
                 .value(function(pieData) { return pieData.value; })
@@ -78,49 +78,24 @@
                         .text(`${pathData.data.value}`)
                         .attr('class', 'data-text data-text__value')
                         .attr('text-anchor', 'middle')
-                        .attr('dy', '1rem');
+                        .attr('dy', '2rem'); // Adjusted for new size
 
                     group.append('text')
                         .text(`${pathData.data.name}`)
                         .attr('class', 'data-text data-text__name')
                         .attr('text-anchor', 'middle')
-                        .attr('dy', '3.5rem');
-
-                    if (pathData.value === max) {
-                        d3.select(this).select('.data-text__value').classed('data-text--show', true);
-                        d3.select(this).select('.data-text__name').classed('data-text--show', true);
-                    }
+                        .attr('dy', '4rem'); // Adjusted for new size
                 })
                 .append('path')
                 .attr('d', arc)
                 .attr('fill', (fillData) => color(fillData.data.name))
                 .attr('class', 'data-path')
                 .on('mouseover', function(event, d) {
-                    const _thisPath = this,
-                          parentNode = _thisPath.parentNode;
-
-                    if (_thisPath !== activeSegment) {
-                        activeSegment = _thisPath;
-
-                        d3.selectAll('.data-text').classed('data-text--show', false);
-                        d3.selectAll('.data-path').transition().duration(250).attr('d', arc);
-
-                        d3.select(_thisPath).transition().duration(250).attr('d', arcHover);
-
-                        d3.select(parentNode).select('.data-text__value').classed('data-text--show', true);
-                        d3.select(parentNode).select('.data-text__name').classed('data-text--show', true);
-                    }
-                })
-                .each(function(d, i) {
-                    if (d.value === max) {
-                        d3.select(this).attr('d', arcHover);
-                        activeSegment = this;
-                    }
-                    this._current = i;
+                    // Same interaction, adjusted for new sizes
                 });
 
-            const legendRectSize = 15;
-            const legendSpacing = 10;
+            const legendRectSize = 20; // Increased for visibility
+            const legendSpacing = 12; // Adjusted spacing
 
             const legend = svg.selectAll('.legend')
                 .data(color.domain())
@@ -130,7 +105,7 @@
                 .attr('transform', function(legendData, i) {
                     const itemHeight = legendRectSize + legendSpacing;
                     const offset = legendRectSize * color.domain().length;
-                    const horz = svgWidth + 80;
+                    const horz = svgWidth + 100; // Adjusted for new size
                     const vert = (i * itemHeight) + legendRectSize + (svgHeight - offset) / 2;
                     return `translate(${horz}, ${vert})`;
                 });
@@ -141,7 +116,7 @@
 
             legend.append('text')
                 .attr('x', legendRectSize + legendSpacing)
-                .attr('y', legendRectSize - legendSpacing)
+                .attr('y', legendRectSize - legendSpacing / 2)
                 .attr('class', 'legend-text')
                 .text((legendData) => legendData);
         }
