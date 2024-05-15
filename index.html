@@ -194,10 +194,18 @@
 
         // Function to fetch and render the README.md content
         async function fetchReadme() {
-            const response = await fetch('README.md');
-            const markdown = await response.text();
-            const html = marked(markdown);
-            document.getElementById('readme').innerHTML = html;
+            try {
+                const response = await fetch('README.md');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const markdown = await response.text();
+                const html = marked(markdown);
+                document.getElementById('readme').innerHTML = html;
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('readme').innerHTML = '<p>Error loading README.md</p>';
+            }
         }
 
         // Fetch the README.md content on page load
