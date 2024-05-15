@@ -33,14 +33,14 @@
             console.log(data);
             
             // Process the data
-            const countryDotsSum = d3.rollup(
+            const countryDotsAvg = d3.rollup(
               data,
-              v => d3.sum(v, d => +d.Dots),
+              v => d3.mean(v, d => +d.Dots),
               d => d.Country
             );
 
             // Transform the data into a format suitable for the donut chart
-            const pieData = Array.from(countryDotsSum, ([name, value]) => ({
+            const pieData = Array.from(countryDotsAvg, ([name, value]) => ({
               name: name,
               value: value,
               color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color
@@ -101,7 +101,7 @@
               const group = d3.select(this);
 
               group.append('text')
-                .text(`${pathData.data.value}`)
+                .text(`${pathData.data.value.toFixed(2)}`)
                 .attr('class', 'data-text data-text__value')
                 .attr('text-anchor', 'middle')
                 .attr('dy', '1rem');
