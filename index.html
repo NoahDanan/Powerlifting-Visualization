@@ -55,7 +55,7 @@
 
             let activeSegment;
             const data = d.sort((a, b) => b['value'] - a['value']),
-                viewWidth = 800,
+                viewWidth = 1000, // Increased width
                 viewHeight = 800,
                 svgWidth = viewHeight,
                 svgHeight = viewHeight,
@@ -160,7 +160,7 @@
                 .attr('class', 'legend')
                 .attr('transform', function (legendData, i) {
                     const itemHeight = legendRectSize + legendSpacing;
-                    const horz = svgWidth + 150; // Adjusted horizontal position
+                    const horz = svgWidth + 100; // Adjusted horizontal position further to the right
                     const vert = (i * itemHeight) + 20; // Adjusted vertical position
                     return `translate(${horz}, ${vert})`;
                 });
