@@ -172,7 +172,7 @@
 
             legend.append('text')
                 .attr('x', legendRectSize + legendSpacing)
-                .attr('y', legendRectSize - legendSpacing)
+                .attr('y', legendRectSize - legendSpacing / 2) // Lowered text slightly
                 .attr('class', 'legend-text')
                 .text((legendData) => legendData);
         }
