@@ -51,13 +51,15 @@
         bakeDonut(pieData);
 
         function bakeDonut(d) {
+            d3.selectAll('svg').remove();
+
             let activeSegment;
             const data = d.sort((a, b) => b['value'] - a['value']),
-                viewWidth = 500,
-                viewHeight = 300,
+                viewWidth = 800,
+                viewHeight = 800,
                 svgWidth = viewHeight,
                 svgHeight = viewHeight,
-                thickness = 40,
+                thickness = 60,
                 colorArray = data.map(k => k.color),
                 el = d3.select('body'),
                 radius = Math.min(svgWidth, svgHeight) / 2,
