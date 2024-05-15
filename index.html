@@ -32,11 +32,14 @@
             // Log data to console for debugging
             console.log(data);
             
+            // Filter out entries with missing or invalid Country values
+            const validData = data.filter(d => d.Country && d.Country.trim() !== '');
+
             // Process the data
             const countryDotsAvg = d3.rollup(
-              data,
+              validData,
               v => d3.mean(v, d => +d.Dots),
-              d => d.Country ? d.Country : 'Unknown' // Handle missing country values
+              d => d.Country.trim() // Trim any whitespace around country names
             );
 
             // Transform the data into a format suitable for the donut chart
@@ -45,6 +48,9 @@
               value: value,
               color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color
             }));
+
+            // Log the processed pieData for debugging
+            console.log(pieData);
 
             // Pass the transformed data to the bakeDonut function
             bakeDonut(pieData);
