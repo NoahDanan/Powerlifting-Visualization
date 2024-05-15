@@ -160,7 +160,7 @@
                 .attr('class', 'legend')
                 .attr('transform', function (legendData, i) {
                     const itemHeight = legendRectSize + legendSpacing;
-                    const horz = svgWidth - 100; // Adjusted horizontal position
+                    const horz = svgWidth + 150; // Adjusted horizontal position
                     const vert = (i * itemHeight) + 20; // Adjusted vertical position
                     return `translate(${horz}, ${vert})`;
                 });
