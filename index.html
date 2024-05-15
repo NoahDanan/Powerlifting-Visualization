@@ -31,12 +31,9 @@
             // Log data to console for debugging
             console.log(data);
 
-            // Filter out entries with missing or invalid Country or Dots values
-            const validData = data.filter(d => d.Country && d.Country.trim() !== '' && d.Dots && !isNaN(d.Dots));
-
             // Process the data: group by Country and calculate mean of Dots
             const countryDotsAvg = d3.rollup(
-              validData,
+              data,
               v => d3.mean(v, d => +d.Dots),
               d => d.Country.trim() // Trim any whitespace around country names
             );
