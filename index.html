@@ -11,7 +11,7 @@
         }
         .data-text {
             fill: #fff;
-            font-size: 32px; /* Adjusted for larger view */
+            font-size: 48px; /* Increased font size */
             visibility: hidden;
         }
         .data-text--show {
@@ -19,169 +19,170 @@
         }
         .legend-text {
             fill: #fff; /* Set legend color */
-            font-size: 14px; /* Adjusted for larger view */
+            font-size: 18px; /* Increased legend text size */
+        }
+        .slider-container {
+            margin: 20px;
+            text-align: center;
+        }
+        .slider {
+            width: 80%;
+        }
+        .year-label {
+            color: #fff;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
+    <div class="slider-container">
+        <label for="year-slider" class="year-label">Year: <span id="year-label">2020</span></label>
+        <input type="range" id="year-slider" class="slider" min="2010" max="2023" value="2020" step="1">
+    </div>
     <script>
-        
-        // Load the powerlifting data and display it to ensure it's being imported correctly
-        d3.csv("https://noahdanan.github.io/Powerlifting-Visualization/powerlifting.csv")
-          .then(function(data) {
-            // Log data to console for debugging
-            console.log(data);
-          })
-          .catch(function(error) {
-            console.error('Error loading the CSV file:', error);
-          });
-
+        // Example data for the initial visualization
         const pieData = [
-  {name: 'Running', value: 40, color: '#18FFFF'},
-  {name: 'Paused', value: 26, color: '#0288D1'},
-  {name: 'Stopped', value: 7, color: '#BF360C'},
-  {name: 'Failed', value: 13, color: '#F4511E'},
-  {name: 'Unknown', value: 19, color: '#F9A825'},
-];
-bakeDonut(pieData);
+            {name: 'Running', value: 40, color: '#18FFFF'},
+            {name: 'Paused', value: 26, color: '#0288D1'},
+            {name: 'Stopped', value: 7, color: '#BF360C'},
+            {name: 'Failed', value: 13, color: '#F4511E'},
+            {name: 'Unknown', value: 19, color: '#F9A825'},
+        ];
+        bakeDonut(pieData);
 
-function bakeDonut(d) {
-  let activeSegment;
-  const data = d.sort( (a, b) => b['value'] - a['value']),
-        viewWidth = 500,
-        viewHeight = 300,
-        svgWidth = viewHeight,
-        svgHeight = viewHeight,
-        thickness = 40,
-        colorArray = data.map(k => k.color),
-        el = d3.select('body'),
-        radius = Math.min(svgWidth, svgHeight) / 2,
-        color = d3.scaleOrdinal()
-          .range(colorArray);
+        function bakeDonut(d) {
+            d3.selectAll('svg').remove();
 
-  const max = d3.max(data, (maxData) => maxData.value );
+            let activeSegment;
+            const data = d.sort((a, b) => b['value'] - a['value']),
+                viewWidth = 1000, // Increased width
+                viewHeight = 800,
+                svgWidth = viewHeight,
+                svgHeight = viewHeight,
+                thickness = 100, // Increased thickness
+                colorArray = data.map(k => k.color),
+                el = d3.select('body'),
+                radius = Math.min(svgWidth, svgHeight) / 2,
+                color = d3.scaleOrdinal().range(colorArray);
 
-  const svg = el.append('svg')
-  .attr('viewBox', `0 0 ${viewWidth + thickness} ${viewHeight + thickness}`)
-  .attr('class', 'pie')
-  .attr('width', viewWidth)
-  .attr('height', svgHeight);
+            const max = d3.max(data, (maxData) => maxData.value);
 
-  const g = svg.append('g')
-  .attr('transform', `translate( ${ (svgWidth / 2) + (thickness / 2) }, ${ (svgHeight / 2) + (thickness / 2)})`);
+            const svg = el.append('svg')
+                .attr('viewBox', `0 0 ${viewWidth + thickness} ${viewHeight + thickness}`)
+                .attr('class', 'pie')
+                .attr('width', viewWidth)
+                .attr('height', svgHeight);
 
-  const arc = d3.arc()
-  .innerRadius(radius - thickness)
-  .outerRadius(radius);
+            const g = svg.append('g')
+                .attr('transform', `translate(${(svgWidth / 2) + (thickness / 2)}, ${(svgHeight / 2) + (thickness / 2)})`);
 
-  const arcHover = d3.arc()
-  .innerRadius(radius - ( thickness + 5 ))
-  .outerRadius(radius + 8);
+            const arc = d3.arc()
+                .innerRadius(radius - thickness)
+                .outerRadius(radius);
 
-  const pie = d3.pie()
-  .value(function(pieData) { return pieData.value; })
-  .sort(null);
+            const arcHover = d3.arc()
+                .innerRadius(radius - (thickness + 5))
+                .outerRadius(radius + 8);
 
+            const pie = d3.pie()
+                .value(function (pieData) { return pieData.value; })
+                .sort(null);
 
-  const path = g.selectAll('path')
-  .attr('class', 'data-path')
-  .data(pie(data))
-  .enter()
-  .append('g')
-  .attr('class', 'data-group')
-  .each(function(pathData, i) {
-    const group = d3.select(this)
+            const path = g.selectAll('path')
+                .attr('class', 'data-path')
+                .data(pie(data))
+                .enter()
+                .append('g')
+                .attr('class', 'data-group')
+                .each(function (pathData, i) {
+                    const group = d3.select(this);
 
-    group.append('text')
-      .text(`${pathData.data.value}`)
-      .attr('class', 'data-text data-text__value')
-      .attr('text-anchor', 'middle')
-      .attr('dy', '1rem')
+                    group.append('text')
+                        .text(`${pathData.data.value}`)
+                        .attr('class', 'data-text data-text__value')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '1rem');
 
-    group.append('text')
-      .text(`${pathData.data.name}`)
-      .attr('class', 'data-text data-text__name')
-      .attr('text-anchor', 'middle')
-      .attr('dy', '3.5rem')
+                    group.append('text')
+                        .text(`${pathData.data.name}`)
+                        .attr('class', 'data-text data-text__name')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '3.5rem');
 
-    // Set default active segment
-    if (pathData.value === max) {
-      const textVal = d3.select(this).select('.data-text__value')
-      .classed('data-text--show', true);
+                    // Set default active segment
+                    if (pathData.value === max) {
+                        d3.select(this).select('.data-text__value').classed('data-text--show', true);
+                        d3.select(this).select('.data-text__name').classed('data-text--show', true);
+                    }
+                })
+                .append('path')
+                .attr('d', arc)
+                .attr('fill', (fillData, i) => color(fillData.data.name))
+                .attr('class', 'data-path')
+                .on('mouseover', function () {
+                    const _thisPath = this,
+                        parentNode = _thisPath.parentNode;
 
-      const textName = d3.select(this).select('.data-text__name')
-      .classed('data-text--show', true);
-    }
+                    if (_thisPath !== activeSegment) {
+                        activeSegment = _thisPath;
 
-  })
-  .append('path')
-  .attr('d', arc)
-  .attr('fill', (fillData, i) => color(fillData.data.name))
-  .attr('class', 'data-path')
-  .on('mouseover', function() {
-    const _thisPath = this,
-          parentNode = _thisPath.parentNode;
+                        d3.selectAll('.data-text').classed('data-text--show', false);
 
-    if (_thisPath !== activeSegment) {
+                        d3.selectAll('.data-path')
+                            .transition()
+                            .duration(250)
+                            .attr('d', arc);
 
-      activeSegment = _thisPath;
+                        d3.select(_thisPath)
+                            .transition()
+                            .duration(250)
+                            .attr('d', arcHover);
 
-      const dataTexts = d3.selectAll('.data-text')
-      .classed('data-text--show', false);
+                        d3.select(parentNode).select('.data-text__value').classed('data-text--show', true);
+                        d3.select(parentNode).select('.data-text__name').classed('data-text--show', true);
+                    }
+                })
+                .each(function (v, i) {
+                    if (v.value === max) {
+                        d3.select(this).attr('d', arcHover);
+                        activeSegment = this;
+                    }
+                    this._current = i;
+                });
 
-      const paths = d3.selectAll('.data-path')
-      .transition()
-      .duration(250)
-      .attr('d', arc);
+            const legendRectSize = 20; // Increased legend size
+            const legendSpacing = 10;
 
-      d3.select(_thisPath)
-        .transition()
-        .duration(250)
-        .attr('d', arcHover);
+            const legend = svg.selectAll('.legend')
+                .data(color.domain())
+                .enter()
+                .append('g')
+                .attr('class', 'legend')
+                .attr('transform', function (legendData, i) {
+                    const itemHeight = legendRectSize + legendSpacing;
+                    const horz = svgWidth + 100; // Adjusted horizontal position further to the right
+                    const vert = (i * itemHeight) + 20; // Adjusted vertical position
+                    return `translate(${horz}, ${vert})`;
+                });
 
-      const thisDataValue = d3.select(parentNode).select('.data-text__value')
-      .classed('data-text--show', true);
-      const thisDataText = d3.select(parentNode).select('.data-text__name')
-      .classed('data-text--show', true);
-    }
+            legend.append('rect') // Changed from circle to rect for better appearance
+                .attr('width', legendRectSize)
+                .attr('height', legendRectSize)
+                .style('fill', color);
 
+            legend.append('text')
+                .attr('x', legendRectSize + legendSpacing)
+                .attr('y', legendRectSize - legendSpacing / 2) // Lowered text slightly
+                .attr('class', 'legend-text')
+                .text((legendData) => legendData);
+        }
 
-  })
-  .each(function(v, i) {
-    if (v.value === max) {
-      const maxArc = d3.select(this)
-      .attr('d', arcHover);
-      activeSegment = this;
-    }
-    this._current = i;
-  });
-
-  const legendRectSize = 15;
-  const legendSpacing = 10;
-
-  const legend = svg.selectAll('.legend')
-  .data(color.domain())
-  .enter()
-  .append('g')
-  .attr('class', 'legend')
-  .attr('transform', function(legendData, i) {
-    const itemHeight =    legendRectSize + legendSpacing;
-    const offset =        legendRectSize * color.domain().length;
-    const horz =          svgWidth + 80;
-    const vert =          (i * itemHeight) + legendRectSize + (svgHeight - offset) / 2;
-    return `translate(${horz}, ${vert})`;
-  });
-
-  legend.append('circle')
-    .attr('r', legendRectSize / 2)
-    .style('fill', color);
-
-  legend.append('text')
-    .attr('x', legendRectSize + legendSpacing)
-    .attr('y', legendRectSize - legendSpacing)
-    .attr('class', 'legend-text')
-    .text( (legendData) => legendData )
-}
+        document.getElementById('year-slider').addEventListener('input', function () {
+            const selectedYear = this.value;
+            document.getElementById('year-label').textContent = selectedYear;
+            // Here you can add functionality to update the data based on the selected year
+            // For now, it just updates the label
+        });
     </script>
 </body>
 </html>
