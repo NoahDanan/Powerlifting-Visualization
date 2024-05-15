@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Powerlifting Visualization</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body {
             background-color: #333; /* Dark grey background */
-            color: #fff; /* White text color for better readability */
         }
         .data-text {
             fill: #fff;
@@ -33,12 +31,6 @@
         .year-label {
             color: #fff;
             font-size: 20px;
-        }
-        .readme-container {
-            margin: 20px;
-            padding: 20px;
-            background-color: #444; /* Slightly lighter background for the readme section */
-            border-radius: 8px;
         }
     </style>
 </head>
@@ -191,27 +183,6 @@
             // Here you can add functionality to update the data based on the selected year
             // For now, it just updates the label
         });
-
-        // Function to fetch and render the README.md content
-        async function fetchReadme() {
-            try {
-                const response = await fetch('README.md');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                const markdown = await response.text();
-                const html = marked(markdown);
-                document.getElementById('readme').innerHTML = html;
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
-                document.getElementById('readme').innerHTML = '<p>Error loading README.md</p>';
-            }
-        }
-
-        // Fetch the README.md content on page load
-        document.addEventListener('DOMContentLoaded', fetchReadme);
     </script>
-
-    <div id="readme" class="readme-container"></div>
 </body>
 </html>
