@@ -160,9 +160,8 @@
                 .attr('class', 'legend')
                 .attr('transform', function (legendData, i) {
                     const itemHeight = legendRectSize + legendSpacing;
-                    const offset = legendRectSize * color.domain().length;
-                    const horz = svgWidth + 80;
-                    const vert = (i * itemHeight) + legendRectSize + (svgHeight - offset) / 2;
+                    const horz = svgWidth - 100; // Adjusted horizontal position
+                    const vert = (i * itemHeight) + 20; // Adjusted vertical position
                     return `translate(${horz}, ${vert})`;
                 });
 
