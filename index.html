@@ -11,7 +11,7 @@
         }
         .data-text {
             fill: #fff;
-            font-size: 32px; /* Adjusted for larger view */
+            font-size: 48px; /* Increased font size */
             visibility: hidden;
         }
         .data-text--show {
@@ -19,7 +19,7 @@
         }
         .legend-text {
             fill: #fff; /* Set legend color */
-            font-size: 14px; /* Adjusted for larger view */
+            font-size: 18px; /* Increased legend text size */
         }
         .slider-container {
             margin: 20px;
@@ -150,7 +150,7 @@
                     this._current = i;
                 });
 
-            const legendRectSize = 15;
+            const legendRectSize = 20; // Increased legend size
             const legendSpacing = 10;
 
             const legend = svg.selectAll('.legend')
@@ -165,8 +165,9 @@
                     return `translate(${horz}, ${vert})`;
                 });
 
-            legend.append('circle')
-                .attr('r', legendRectSize / 2)
+            legend.append('rect') // Changed from circle to rect for better appearance
+                .attr('width', legendRectSize)
+                .attr('height', legendRectSize)
                 .style('fill', color);
 
             legend.append('text')
