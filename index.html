@@ -197,4 +197,16 @@
             // For now, it just updates the label
         });
 
-        // Fetch
+        // Fetch and display README content
+        fetch('README.md') // Adjust the path if necessary
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('readme-content').textContent = text;
+            })
+            .catch(error => console.error('Error fetching README:', error));
+    </script>
+    <div class="readme-container">
+        <pre id="readme-content"></pre>
+    </div>
+</body>
+</html>
