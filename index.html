@@ -8,6 +8,8 @@
     <style>
         body {
             background-color: #333; /* Dark grey background */
+            color: #fff; /* White text */
+            font-family: Arial, sans-serif; /* Added a font-family */
         }
         .data-text {
             fill: #fff;
@@ -31,6 +33,17 @@
         .year-label {
             color: #fff;
             font-size: 20px;
+        }
+        .readme-container {
+            margin: 20px;
+            padding: 10px;
+            background-color: #444; /* Darker grey background for README container */
+            border-radius: 5px; /* Rounded corners */
+        }
+        .readme-container pre {
+            white-space: pre-wrap; /* Allows text to wrap */
+            font-size: 16px; /* Font size for README text */
+            line-height: 1.5; /* Line height for better readability */
         }
     </style>
 </head>
@@ -183,6 +196,5 @@
             // Here you can add functionality to update the data based on the selected year
             // For now, it just updates the label
         });
-    </script>
-</body>
-</html>
+
+        // Fetch
