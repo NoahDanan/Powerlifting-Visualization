@@ -31,18 +31,33 @@
             // Log data to console for debugging
             console.log(data);
 
+            // Filter out entries with missing or invalid Country or Dots values
+            const validData = data.filter(d => d.Country && d.Country.trim() !== '' && d.Dots && !isNaN(d.Dots));
+
             // Process the data: group by Country and calculate mean of Dots
             const countryDotsAvg = d3.rollup(
-              data,
+              validData,
               v => d3.mean(v, d => +d.Dots),
               d => d.Country.trim() // Trim any whitespace around country names
             );
 
-            // Transform the data into a format suitable for the donut chart
-            const pieData = Array.from(countryDotsAvg, ([name, value]) => ({
+            // Transform the data into an array and sort by mean Dots
+            const sortedCountryDots = Array.from(countryDotsAvg, ([name, value]) => ({
               name: name,
-              value: value,
-              color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color
+              value: value
+            })).sort((a, b) => b.value - a.value);
+
+            // Select the top 5 countries based on average Dots
+            const top5Countries = sortedCountryDots.slice(0, 5);
+
+            // Define colors for the top 5 countries
+            const colors = ['#18FFFF', '#0288D1', '#BF360C', '#F4511E', '#F9A825'];
+
+            // Update the pieData variable
+            const pieData = top5Countries.map((d, i) => ({
+              name: d.name,
+              value: d.value,
+              color: colors[i]
             }));
 
             // Log the processed pieData for debugging
@@ -50,7 +65,6 @@
 
             // Pass the transformed data to the bakeDonut function
             bakeDonut(pieData);
-
           })
           .catch(function(error) {
             console.error('Error loading the CSV file:', error);
