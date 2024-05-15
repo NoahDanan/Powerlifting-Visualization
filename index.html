@@ -33,17 +33,17 @@
             console.log(data);
             
             // Process the data
-            const weightClassCount = d3.rollup(
+            const countryDotsSum = d3.rollup(
               data,
-              v => v.length,
-              d => d.WeightClassKg
+              v => d3.sum(v, d => +d.Dots),
+              d => d.Country
             );
 
             // Transform the data into a format suitable for the donut chart
-            const pieData = Array.from(weightClassCount, ([name, value]) => ({
+            const pieData = Array.from(countryDotsSum, ([name, value]) => ({
               name: name,
               value: value,
-              color: '#' + Math.floor(Math.random()*16777215).toString(16) // Random color
+              color: '#' + Math.floor(Math.random() * 16777215).toString(16) // Random color
             }));
 
             // Pass the transformed data to the bakeDonut function
@@ -152,8 +152,6 @@
                 const thisDataText = d3.select(parentNode).select('.data-text__name')
                   .classed('data-text--show', true);
               }
-
-
             })
             .each(function(v, i) {
               if (v.value === max) {
