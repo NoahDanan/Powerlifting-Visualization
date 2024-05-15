@@ -36,7 +36,7 @@
             const countryDotsAvg = d3.rollup(
               data,
               v => d3.mean(v, d => +d.Dots),
-              d => d.Country
+              d => d.Country ? d.Country : 'Unknown' // Handle missing country values
             );
 
             // Transform the data into a format suitable for the donut chart
