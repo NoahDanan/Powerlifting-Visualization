@@ -89,20 +89,20 @@
             d3.csv(file).then(function(data) {
                 const pieData = data.map(d => ({
                     name: d.WeightClassKg + 'kg',
-                    value: +d.Dots,
-                    color: getRandomColor()
+                    value: +d.Dots
                 }));
                 bakeDonut(pieData);
             }).catch(error => console.error('Error fetching data:', error));
         }
 
-        function getRandomColor() {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
+        function getBlueShades(numShades) {
+            const shades = [];
+            const step = Math.floor(255 / numShades);
+            for (let i = 0; i < numShades; i++) {
+                const blueValue = 255 - (i * step);
+                shades.push(`rgb(0, 0, ${blueValue})`);
             }
-            return color;
+            return shades;
         }
 
         function bakeDonut(data) {
@@ -117,7 +117,7 @@
                 svgWidth = viewHeight,
                 svgHeight = viewHeight,
                 thickness = 100, // Increased thickness
-                colorArray = top10Data.map(k => k.color),
+                colorArray = getBlueShades(top10Data.length),
                 el = d3.select('body'),
                 radius = Math.min(svgWidth, svgHeight) / 2,
                 color = d3.scaleOrdinal().range(colorArray);
