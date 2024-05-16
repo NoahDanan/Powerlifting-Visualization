@@ -49,19 +49,26 @@
 </head>
 <body>
     <div class="slider-container">
-        <label for="year-slider" class="year-label">Year: <span id="year-label">2020</span></label>
-        <input type="range" id="year-slider" class="slider" min="2010" max="2023" value="2020" step="1">
+        <label for="year-slider" class="year-label">Year: <span id="year-label">2004</span></label>
+        <input type="range" id="year-slider" class="slider" min="2004" max="2014" value="2004" step="10">
     </div>
     <script>
-        // Fetch CSV data and generate the donut chart
-        d3.csv('df_2004_mean.csv').then(function(data) {
-            const pieData = data.map(d => ({
-                name: d.WeightClassKg + 'kg',
-                value: +d.Dots,
-                color: getRandomColor()
-            }));
-            bakeDonut(pieData);
-        });
+        const datasets = {
+            '2004': 'df_2004_mean.csv',
+            '2014': 'df_2014_mean.csv'
+        };
+
+        function loadData(year) {
+            const file = datasets[year];
+            d3.csv(file).then(function(data) {
+                const pieData = data.map(d => ({
+                    name: d.WeightClassKg + 'kg',
+                    value: +d.Dots,
+                    color: getRandomColor()
+                }));
+                bakeDonut(pieData);
+            }).catch(error => console.error('Error fetching data:', error));
+        }
 
         function getRandomColor() {
             const letters = '0123456789ABCDEF';
@@ -202,9 +209,11 @@
         document.getElementById('year-slider').addEventListener('input', function() {
             const selectedYear = this.value;
             document.getElementById('year-label').textContent = selectedYear;
-            // Here you can add functionality to update the data based on the selected year
-            // For now, it just updates the label
+            loadData(selectedYear);
         });
+
+        // Load initial data
+        loadData('2004');
 
         // Fetch and display README content
         fetch('README.md') // Adjust the path if necessary
