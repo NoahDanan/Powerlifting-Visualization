@@ -64,20 +64,19 @@
             d3.csv(file).then(function(data) {
                 const pieData = data.map(d => ({
                     name: d.WeightClassKg + 'kg',
-                    value: +d.Dots,
-                    color: getRandomColor()
+                    value: +d.Dots
                 }));
                 bakeDonut(pieData);
             }).catch(error => console.error('Error fetching data:', error));
         }
 
-        function getRandomColor() {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
+        function getBlueShades(n) {
+            const shades = [];
+            for (let i = 0; i < n; i++) {
+                const shade = d3.interpolateBlues(i / (n - 1)); // Interpolate between light and dark blue
+                shades.push(shade);
             }
-            return color;
+            return shades;
         }
 
         function bakeDonut(data) {
@@ -92,7 +91,7 @@
                 svgWidth = viewHeight,
                 svgHeight = viewHeight,
                 thickness = 100, // Increased thickness
-                colorArray = top10Data.map(k => k.color),
+                colorArray = getBlueShades(top10Data.length),
                 el = d3.select('body'),
                 radius = Math.min(svgWidth, svgHeight) / 2,
                 color = d3.scaleOrdinal().range(colorArray);
@@ -149,7 +148,7 @@
                 })
                 .append('path')
                 .attr('d', arc)
-                .attr('fill', (fillData, i) => color(fillData.data.name))
+                .attr('fill', (fillData, i) => color(i))
                 .attr('class', 'data-path')
                 .on('mouseover', function() {
                     const _thisPath = this,
@@ -200,13 +199,13 @@
             legend.append('rect') // Changed from circle to rect for better appearance
                 .attr('width', legendRectSize)
                 .attr('height', legendRectSize)
-                .style('fill', color);
+                .style('fill', (d, i) => color(i));
 
             legend.append('text')
                 .attr('x', legendRectSize + legendSpacing)
                 .attr('y', legendRectSize - legendSpacing / 2) // Lowered text slightly
                 .attr('class', 'legend-text')
-                .text((legendData) => legendData);
+                .text((legendData, i) => top10Data[i].name);
         }
 
         document.getElementById('year-slider').addEventListener('input', function() {
