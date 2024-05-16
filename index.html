@@ -49,40 +49,15 @@
 </head>
 <body>
     <div class="slider-container">
-        <label for="year-slider" class="year-label">Year: <span id="year-label">2004</span></label>
-        <input type="range" id="year-slider" class="slider" min="1997" max="2024" value="1997" step="10">
+        <label for="year-slider" class="year-label">Year: <span id="year-label">1997</span></label>
+        <input type="range" id="year-slider" class="slider" min="1997" max="2024" value="1997" step="1">
     </div>
     <script>
-        const datasets = {
-            '1997': 'df_1997_mean.csv',
-            '1998': 'df_1998_mean.csv',
-            '1999': 'df_1999_mean.csv',
-            '2000': 'df_2000_mean.csv',
-            '2001': 'df_2001_mean.csv',
-            '2002': 'df_2002_mean.csv',
-            '2003': 'df_2003_mean.csv',
-            '2004': 'df_2004_mean.csv',
-            '2005': 'df_2005_mean.csv',
-            '2006': 'df_2006_mean.csv',
-            '2007': 'df_2007_mean.csv',
-            '2008': 'df_2008_mean.csv',
-            '2009': 'df_2009_mean.csv',
-            '2010': 'df_2010_mean.csv',
-            '2011': 'df_2011_mean.csv',
-            '2012': 'df_2012_mean.csv',
-            '2013': 'df_2013_mean.csv',
-            '2014': 'df_2014_mean.csv',
-            '2015': 'df_2015_mean.csv',
-            '2016': 'df_2016_mean.csv',
-            '2017': 'df_2017_mean.csv',
-            '2018': 'df_2018_mean.csv',
-            '2019': 'df_2019_mean.csv',
-            '2020': 'df_2020_mean.csv',
-            '2021': 'df_2021_mean.csv',
-            '2022': 'df_2022_mean.csv',
-            '2023': 'df_2023_mean.csv',
-            '2024': 'df_2024_mean.csv'
-        };
+        // Generate the datasets object dynamically
+        const datasets = {};
+        for (let year = 1997; year <= 2024; year++) {
+            datasets[year] = `df_${year}.csv`;
+        }
 
         function loadData(year) {
             const file = datasets[year];
