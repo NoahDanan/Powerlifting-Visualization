@@ -63,7 +63,7 @@
             const file = datasets[year];
             d3.csv(file).then(function(data) {
                 const pieData = data.map(d => ({
-                    name: d.WeightClassKg + 'kg',
+                    name: `Weight Class: ${parseFloat(d.WeightClassKg).toFixed(1)}kg`,
                     value: +d.Dots
                 }));
                 bakeDonut(pieData);
@@ -129,21 +129,21 @@
                     const group = d3.select(this);
 
                     group.append('text')
-                        .text(`Dots: ${pathData.data.value.toFixed(2)}`)
-                        .attr('class', 'data-text data-text__value')
-                        .attr('text-anchor', 'middle')
-                        .attr('dy', '1rem');
-
-                    group.append('text')
                         .text(`${pathData.data.name}`)
                         .attr('class', 'data-text data-text__name')
                         .attr('text-anchor', 'middle')
-                        .attr('dy', '3.5rem');
+                        .attr('dy', '-1.5rem'); // Position the weight class text above
+
+                    group.append('text')
+                        .text(`Dots: ${pathData.data.value.toFixed(2)}`)
+                        .attr('class', 'data-text data-text__value')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '1rem'); // Position the dots text below
 
                     // Set default active segment
                     if (pathData.value === max) {
-                        d3.select(this).select('.data-text__value').classed('data-text--show', true);
                         d3.select(this).select('.data-text__name').classed('data-text--show', true);
+                        d3.select(this).select('.data-text__value').classed('data-text--show', true);
                     }
                 })
                 .append('path')
@@ -169,8 +169,8 @@
                             .duration(250)
                             .attr('d', arcHover);
 
-                        d3.select(parentNode).select('.data-text__value').classed('data-text--show', true);
                         d3.select(parentNode).select('.data-text__name').classed('data-text--show', true);
+                        d3.select(parentNode).select('.data-text__value').classed('data-text--show', true);
                     }
                 })
                 .each(function(v, i) {
