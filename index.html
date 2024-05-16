@@ -49,14 +49,15 @@
 </head>
 <body>
     <div class="slider-container">
-        <label for="year-slider" class="year-label">Year: <span id="year-label">2004</span></label>
-        <input type="range" id="year-slider" class="slider" min="2004" max="2014" value="2004" step="10">
+        <label for="year-slider" class="year-label">Year: <span id="year-label">1997</span></label>
+        <input type="range" id="year-slider" class="slider" min="1997" max="2024" value="1997" step="1">
     </div>
     <script>
-        const datasets = {
-            '2004': 'df_2004_mean.csv',
-            '2014': 'df_2014_mean.csv'
-        };
+        // Generate the datasets object dynamically
+        const datasets = {};
+        for (let year = 1997; year <= 2024; year++) {
+            datasets[year] = `df_${year}.csv`;
+        }
 
         function loadData(year) {
             const file = datasets[year];
@@ -215,7 +216,7 @@
         });
 
         // Load initial data
-        loadData('2004');
+        loadData('1997');
 
         // Fetch and display README content
         fetch('README.md') // Adjust the path if necessary
