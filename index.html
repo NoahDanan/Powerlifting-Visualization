@@ -242,7 +242,7 @@
         loadData('1997');
 
         // Fetch and display README content
-        fetch('README.md') // Adjust the path if necessary
+        fetch(`README.md?timestamp=${new Date().getTime()}`) // Cache-busting parameter added
             .then(response => response.text())
             .then(text => {
                 document.getElementById('readme-content').textContent = text;
