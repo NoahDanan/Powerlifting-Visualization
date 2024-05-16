@@ -132,13 +132,13 @@
                         .text(`${pathData.data.name}`)
                         .attr('class', 'data-text data-text__name')
                         .attr('text-anchor', 'middle')
-                        .attr('dy', '-1.5rem'); // Position the weight class text above
+                        .attr('dy', '-2rem'); // Increased space between lines
 
                     group.append('text')
                         .text(`Dots: ${pathData.data.value.toFixed(2)}`)
                         .attr('class', 'data-text data-text__value')
                         .attr('text-anchor', 'middle')
-                        .attr('dy', '1rem'); // Position the dots text below
+                        .attr('dy', '2rem'); // Increased space between lines
 
                     // Set default active segment
                     if (pathData.value === max) {
