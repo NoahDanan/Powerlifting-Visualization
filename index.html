@@ -82,19 +82,21 @@
         function bakeDonut(data) {
             d3.selectAll('svg').remove();
 
+            // Sort data by value and keep only the top 10 entries
+            const top10Data = data.sort((a, b) => b.value - a.value).slice(0, 10);
+
             let activeSegment;
-            const sortedData = data.sort((a, b) => b.value - a.value),
-                viewWidth = 1000, // Increased width
+            const viewWidth = 1000, // Increased width
                 viewHeight = 800,
                 svgWidth = viewHeight,
                 svgHeight = viewHeight,
                 thickness = 100, // Increased thickness
-                colorArray = sortedData.map(k => k.color),
+                colorArray = top10Data.map(k => k.color),
                 el = d3.select('body'),
                 radius = Math.min(svgWidth, svgHeight) / 2,
                 color = d3.scaleOrdinal().range(colorArray);
 
-            const max = d3.max(sortedData, (maxData) => maxData.value);
+            const max = d3.max(top10Data, (maxData) => maxData.value);
 
             const svg = el.append('svg')
                 .attr('viewBox', `0 0 ${viewWidth + thickness} ${viewHeight + thickness}`)
@@ -119,7 +121,7 @@
 
             const path = g.selectAll('path')
                 .attr('class', 'data-path')
-                .data(pie(sortedData))
+                .data(pie(top10Data))
                 .enter()
                 .append('g')
                 .attr('class', 'data-group')
