@@ -15,6 +15,11 @@
             align-items: center; /* Center content vertically */
             height: 100vh; /* Full viewport height */
             margin: 0; /* Remove default margin */
+            flex-direction: column; /* Stack elements vertically */
+        }
+        .title {
+            margin: 20px 0; /* Add some margin for spacing */
+            font-size: 32px; /* Increased font size for the title */
         }
         .data-text {
             fill: #fff;
@@ -59,6 +64,7 @@
     </style>
 </head>
 <body>
+    <h1 class="title">Powerlifting Interactive Visualization</h1>
     <div class="centered-container">
         <div class="slider-container">
             <label for="year-slider" class="year-label">Year: <span id="year-label">1997</span></label>
