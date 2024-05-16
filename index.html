@@ -129,7 +129,7 @@
                     const group = d3.select(this);
 
                     group.append('text')
-                        .text(`${pathData.data.value}`)
+                        .text(`Dots: ${pathData.data.value.toFixed(2)}`)
                         .attr('class', 'data-text data-text__value')
                         .attr('text-anchor', 'middle')
                         .attr('dy', '1rem');
